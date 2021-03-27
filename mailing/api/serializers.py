@@ -1,4 +1,4 @@
-from rest_framework.serializers import (IntegerField, CharField, Serialize, ModelSerializer)
+from rest_framework.serializers import (IntegerField, CharField, Serializer, ModelSerializer)
 from notes.models import Note
 
 

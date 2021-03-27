@@ -9,13 +9,13 @@ from api.serializers import NoteSerializer
 
 
 @api_view(['GET', 'POST'])
-def notes_list(request):
+def notes_list(request ):# format=None для оторажения в формате json
     if request.method == 'GET': # если метод 
         notes = Note.objects.all() # выдать все
         serializer = NoteSerializer(notes, many=True) # серелизотр в переменную
         return Response(serializer.data) # передаем
     elif request.method == 'POST':
-        serializer = NoteSerializer(data=request.data)
+        serializer = NoteSerializer(data=request.data)# передаем данные
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)# статус DRF
