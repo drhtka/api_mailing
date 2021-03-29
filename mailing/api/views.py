@@ -33,6 +33,7 @@ class NoteViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwags):
         notes = Note.objects.all()
+        # notes = Note.objects.filter(author=self.request.user) # если надо филтровать ситатьи по пользователю
         context = {'request': request}
         serializer = ThinNoteSerializer(notes, many=True, context=context)
         return Response(serializer.data)
