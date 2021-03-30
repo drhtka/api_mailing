@@ -7,17 +7,24 @@ from rest_framework.response import Response
 
 from notes.models import Note
 
-from api.serializers import NoteSerializer, ThinNoteSerializer
+from api.serializers import NoteSerializer, ThinNoteSerializer, UserSerializer
 from rest_framework.mixins import (
     ListModelMixin, CreateModelMixin, RetrieveModelMixin, 
-    UpdateModelMixin, DestroyModelMixin)
+    UpdateModelMixin, DestroyModelMixin)# миксины
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView # чтоб правильно работали миксины
 from rest_framework.viewsets import ModelViewSet # объеденяет в себе все миксины
-from rest_framework.permissions import IsAdminUser
-# from .permissions import IsAuthorOrReadOnly
-# from django.contrib.auth import get_user_model
+#from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly # запрет не авторизированным, вход только админам
+from rest_framework.permissions import IsAdminUser # новых пользователей создат только админ
+from .permissions import IsAuthorOrReadOnly # если не прошел аутентификацию только чтение
+from django.contrib.auth import get_user_model
 
+################# User
 
+class UserViewSet(ModelViewSet):
+    model = get_user_model()
+    queryset = model.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAdminUser, )
 
 ################# api на миксинах 3 варианта
 ############## вариант 3 #######################
@@ -27,9 +34,11 @@ class NoteViewSet(ModelViewSet):
     # queryset = model.objects.none()
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
+    permission_classes = (IsAuthorOrReadOnly,)
     http_method_names = ['get', 'post']# по умолчанию доступны все методы, здесь можно указать то что надо
-    # permission_classes = (IsAuthorOrReadOnly,)
-    # http_method_names = ['get', 'post']
+    # permission_classes = (IsAuthenticated,)
+
+
 
     def list(self, request, *args, **kwags):
         notes = Note.objects.all()
