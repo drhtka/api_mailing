@@ -18,7 +18,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Пользователь должен ввести пароль')
         email = self.normalize_email(email)
         user = self.model(email=email, name=name)
-        user.set_password(password)
+        user.set_password(password) # хеширует пароль
         user.staff = is_staff
         user.admin = is_admin
         user.is_active = is_active
@@ -83,9 +83,13 @@ class User(AbstractBaseUser):
         return self.admin
 
     def save(self, *args, **kwargs):
-        if not self.id and not self.staff and not self.admin:
-            self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+        try:
+            _alg = identify_hasher(self.password)# если пароль захешированный мы идем дальше
+        except ValueError:# если ошибка 
+            self.password = make_password(self.password)# произойдёт перопрелеление пароля и хеширование
+        # if not self.id and not self.staff and not self.admin:
+        #     self.password = make_password(self.password)
+        super().save(*args, **kwargs)# сохранение
 
 
 

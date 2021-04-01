@@ -11,12 +11,14 @@ class UserSerializer(ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        password = validated_data.pop('password', '')
         user = self.Meta.model(**validated_data)# модель определеана в мета клссе
+        user.set_password(password)# set_password (хешируем)
         user.save()
         return user
 
     def update(self, instance, validated_data):
-        instance.set_password(validated_data.pop('password', ''))# методом pop  выдергиваем пароль
+        instance.set_password(validated_data.pop('password', ''))# set_password (хеш) и методом pop извлекаем пароль
         return super()(instance, validated_data)
 
 
