@@ -25,8 +25,8 @@ SECRET_KEY = '3c*1^@+tvg-3vis93^-3m=dy2y!66qa0lsq5gm1(mfctqbg4^%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
+SITE_ID = 1
 
 # Application definition
 
@@ -125,3 +125,22 @@ STATIC_URL = '/static/'
 
 
 AUTH_USER_MODEL = 'accounts.User'
+
+#djangorestframework-simplejwt
+#https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
+# REST_FRAMEWORK = {
+#         'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#                 'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.BaseAuthentication', # для базовой аутентификации и должно быть выше
+        
+#     )
+# }
+# from datetime import timedelta
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+# }

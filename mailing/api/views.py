@@ -17,10 +17,11 @@ from rest_framework.viewsets import ModelViewSet # объеденяет в се�
 from rest_framework.permissions import IsAdminUser # новых пользователей создат только админ
 from .permissions import IsAuthorOrReadOnly # если не прошел аутентификацию только чтение
 from django.contrib.auth import get_user_model
-
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 ################# User
 
 class UserViewSet(ModelViewSet):
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
     model = get_user_model()
     queryset = model.objects.all()
     serializer_class = UserSerializer
@@ -32,6 +33,7 @@ class UserViewSet(ModelViewSet):
 class NoteViewSet(ModelViewSet):
     # model = Note
     # queryset = model.objects.none()
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
     permission_classes = (IsAuthorOrReadOnly,)
